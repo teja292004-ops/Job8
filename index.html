@@ -7,7 +7,356 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="app"></div>
-    <script type="module" src="app.js"></script>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">Job Notification Tracker</h1>
+                <div class="header-subtitle">Premium Job Management System</div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <a href="/jt/dashboard" class="nav-item active" data-route="dashboard">
+                    <span class="nav-icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="/jt/jobs" class="nav-item" data-route="jobs">
+                    <span class="nav-icon">💼</span>
+                    Jobs
+                </a>
+                <a href="/jt/preferences" class="nav-item" data-route="preferences">
+                    <span class="nav-icon">⚙️</span>
+                    Preferences
+                </a>
+                <a href="/jt/digest" class="nav-item" data-route="digest">
+                    <span class="nav-icon">📋</span>
+                    Digest
+                </a>
+                <a href="/jt/07-test" class="nav-item" data-route="test">
+                    <span class="nav-icon">🧪</span>
+                    Test Checklist
+                </a>
+                <a href="/jt/08-ship" class="nav-item ship-nav" data-route="ship" id="shipNavItem">
+                    <span class="nav-icon">🚀</span>
+                    Ship
+                    <span class="lock-indicator" id="lockIndicator">🔒</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Route -->
+            <div id="dashboard" class="route-content active">
+                <div class="page-header">
+                    <h2>Dashboard</h2>
+                    <p class="page-subtitle">Overview of your job tracking activities</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Active Jobs</h3>
+                        <div class="metric">24</div>
+                        <p>Jobs being tracked</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Match Score</h3>
+                        <div class="metric">87%</div>
+                        <p>Average compatibility</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Applications</h3>
+                        <div class="metric">12</div>
+                        <p>Submitted this week</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Responses</h3>
+                        <div class="metric">5</div>
+                        <p>Pending responses</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jobs Route -->
+            <div id="jobs" class="route-content">
+                <div class="page-header">
+                    <h2>Job Listings</h2>
+                    <p class="page-subtitle">Manage and track job opportunities</p>
+                </div>
+                
+                <div class="job-controls">
+                    <div class="filter-controls">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="showOnlyMatches">
+                            <span class="toggle-slider"></span>
+                            Show only matches
+                        </label>
+                        <select class="status-filter" id="statusFilter">
+                            <option value="all">All Statuses</option>
+                            <option value="saved">Saved</option>
+                            <option value="applied">Applied</option>
+                            <option value="interview">Interview</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="job-list">
+                    <div class="job-card">
+                        <div class="job-header">
+                            <h3>Senior Frontend Developer</h3>
+                            <div class="match-score">92%</div>
+                        </div>
+                        <p class="company">TechCorp Inc.</p>
+                        <div class="job-actions">
+                            <button class="btn-save">Save</button>
+                            <button class="btn-apply" onclick="window.open('#', '_blank')">Apply</button>
+                            <select class="status-select">
+                                <option value="saved">Saved</option>
+                                <option value="applied">Applied</option>
+                                <option value="interview">Interview</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preferences Route -->
+            <div id="preferences" class="route-content">
+                <div class="page-header">
+                    <h2>Preferences</h2>
+                    <p class="page-subtitle">Customize your job tracking experience</p>
+                </div>
+                
+                <div class="preferences-form">
+                    <div class="pref-section">
+                        <h3>Job Matching</h3>
+                        <label>
+                            <input type="range" id="matchThreshold" min="0" max="100" value="75">
+                            Match Threshold: <span id="thresholdValue">75%</span>
+                        </label>
+                    </div>
+                    <div class="pref-section">
+                        <h3>Notifications</h3>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="emailNotifications" checked>
+                            Email notifications
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Digest Route -->
+            <div id="digest" class="route-content">
+                <div class="page-header">
+                    <h2>Daily Digest</h2>
+                    <p class="page-subtitle">Top 10 job matches by score</p>
+                </div>
+                
+                <div class="digest-container">
+                    <div class="digest-header">
+                        <span class="digest-date">Today's Digest</span>
+                        <button class="btn-generate" onclick="generateDigest()">Generate Digest</button>
+                    </div>
+                    <div class="digest-list" id="digestList">
+                        <p class="no-digest">Click "Generate Digest" to see top matches</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Route (/jt/07-test) -->
+            <div id="test" class="route-content">
+                <div class="page-header">
+                    <h2>System Test Checklist</h2>
+                    <p class="page-subtitle">Verify all features before shipping</p>
+                </div>
+                
+                <!-- Test Result Summary -->
+                <div class="test-summary-card">
+                    <div class="summary-header">
+                        <h3>Test Progress</h3>
+                        <div class="progress-indicator">
+                            <span class="progress-text">Tests Passed: <span id="passedCount">0</span> / 10</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="summary-status" id="summaryStatus">
+                        <div class="warning-message">
+                            ⚠️ Resolve all issues before shipping.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Checklist -->
+                <div class="checklist-card">
+                    <h3>Feature Tests</h3>
+                    <div class="checklist-items">
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="preferences">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">Preferences persist after refresh</span>
+                                <span class="test-tooltip" title="Change preferences, refresh page, verify settings remain unchanged">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="match-score">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">Match score calculates correctly</span>
+                                <span class="test-tooltip" title="Verify job match percentage calculation accuracy against expected values">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="show-matches">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">"Show only matches" toggle works</span>
+                                <span class="test-tooltip" title="Toggle filter and verify only matching jobs display in the list">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="save-job">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">Save job persists after refresh</span>
+                                <span class="test-tooltip" title="Save a job, refresh page, verify job remains in saved state">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="apply-tab">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">Apply opens in new tab</span>
+                                <span class="test-tooltip" title="Click apply button, verify new tab opens with job application page">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="status-update">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">Status update persists after refresh</span>
+                                <span class="test-tooltip" title="Update job status, refresh page, verify status change remains">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="status-filter">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">Status filter works correctly</span>
+                                <span class="test-tooltip" title="Filter by different statuses, verify correct jobs display for each filter">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="digest-generation">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">Digest generates top 10 by score</span>
+                                <span class="test-tooltip" title="Generate digest, verify top 10 highest scoring jobs appear in correct order">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="digest-persist">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">Digest persists for the day</span>
+                                <span class="test-tooltip" title="Generate digest, refresh/navigate away, verify digest content remains available">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="checklist-item">
+                            <label class="test-label">
+                                <input type="checkbox" class="test-checkbox" data-test="no-errors">
+                                <span class="custom-checkbox"></span>
+                                <span class="test-text">No console errors on main pages</span>
+                                <span class="test-tooltip" title="Open dev tools, navigate all pages, verify no console errors appear">
+                                    <span class="tooltip-icon">?</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="checklist-actions">
+                        <button class="btn-reset" onclick="resetTestStatus()">Reset Test Status</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ship Route (/jt/08-ship) -->
+            <div id="ship" class="route-content">
+                <div class="ship-container">
+                    <!-- Locked State -->
+                    <div class="ship-locked" id="shipLocked">
+                        <div class="lock-icon">🔒</div>
+                        <h2>Shipping Locked</h2>
+                        <p class="lock-message">Complete all system tests before shipping your application.</p>
+                        <div class="lock-instructions">
+                            <p>To unlock shipping:</p>
+                            <ol>
+                                <li>Navigate to <strong>Test Checklist</strong></li>
+                                <li>Complete all 10 system tests</li>
+                                <li>Verify all checkboxes are marked</li>
+                                <li>Return here to deploy</li>
+                            </ol>
+                        </div>
+                        <button class="btn-goto-tests" onclick="navigateToTests()">Go to Test Checklist</button>
+                    </div>
+                    
+                    <!-- Unlocked State -->
+                    <div class="ship-unlocked" id="shipUnlocked" style="display: none;">
+                        <div class="ship-icon">🚀</div>
+                        <h2>Ready to Ship!</h2>
+                        <p class="success-message">All tests have passed! Your Job Notification Tracker is ready for deployment.</p>
+                        
+                        <div class="deployment-options">
+                            <div class="deploy-card">
+                                <h3>Production Deploy</h3>
+                                <p>Deploy to production environment</p>
+                                <button class="btn-deploy primary">Deploy to Production</button>
+                            </div>
+                            <div class="deploy-card">
+                                <h3>Staging Deploy</h3>
+                                <p>Deploy to staging for final testing</p>
+                                <button class="btn-deploy secondary">Deploy to Staging</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
