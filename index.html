@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Notification Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Fallback styles in case external CSS fails */
+        .css-test { display: none; }
+    </style>
+    <script>
+        // Debug CSS loading
+        window.addEventListener('load', function() {
+            const link = document.querySelector('link[href="styles.css"]');
+            if (link) {
+                link.addEventListener('load', function() {
+                    console.log('CSS loaded successfully');
+                });
+                link.addEventListener('error', function() {
+                    console.error('CSS failed to load');
+                    alert('CSS file failed to load. Please check the deployment.');
+                });
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="app-container">
